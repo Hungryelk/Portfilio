@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}People{% endblock %}
+
+{% block content %}
+<!-- Centers the text and the image -->
+<img class="d-block mx-auto mb-4" src="{{ url_for('static', filename= 'images/birthday-party.png')}}" alt="" width="600" height="400"> 
+<div>
+    <h1 class="text-center"> Party Event People</h1>
+</div>
+<table>
+    <style>
+    table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+</style>
+<thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Email</th>
+      <th>Data of Birth</th>
+      <th>Phone</th>
+      <th>Role</th>
+    </tr>
+</thead>
+<!-- ADDED ROLE -->
+<tbody>
+    {%for pe in people%}
+    <tr>
+      <td>{{pe["Name"]}}</td>
+      <td>{{pe["address"]}}</td>
+      <td>{{pe["email"]}}</td>
+      <td>{{pe["date_of_birth"]}}</td>
+      <td>{{pe["phone"]}}</td>
+      <td>{{pe["role"]}}</td>
+    </tr>
+    {%endfor%}
+</tbody>
+  </table>
+  <br>
+
+  <center><a href="{{ url_for('add_people') }}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Add a person</button></center></a>
+
+
+{% endblock %}

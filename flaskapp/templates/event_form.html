@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Event Add{% endblock %}
+
+{% block content %}
+{% if event is none %}
+<!-- REQUIRED TAGS ADDED TO MAKE SURE-->
+<h1 class="mt-5">Create a New Event</h1>
+
+<form method="post" name="add_event">
+
+    <div class="mb-3">
+        <label for="Name">  Event Name: </label>
+        <input type="text" id="Name" name="Name"  value="" required>
+    </div>
+    <div class="mb-3">
+        <label for="venue">Venue: </label>
+        <select class="form-select-sm" id="venue" name="venue" required>
+            {% for ven in List_venues %}
+                <option value="{{ ven['Name'] }}">{{ ven['Name'] }}</option>
+            {% endfor %}
+        </select>
+    </div>    
+    <div class="mb-3">
+        <label for="date">Date: </label>
+        <input type="date" id="date" name="date" required>
+    </div>
+    <div class="mb-3">
+        <label for="start_time">Start Time:</label>
+        <input type="time" id="start_time" name="start_time" required>
+    </div>
+    <div class="mb-3">
+        <label for="end_time">End Time:</label>
+        <input type="time" id="end_time" name="end_time">
+    </div>
+    <div class="mb-3">
+        <label for="max_attendes">Max Attendes: </label>
+        <input type="text" id="max_attendes" name="max_attendes" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="invitation">Invitation: </label>
+        <textarea id="invitation" name="invitation" rows="3" width="33" required>
+        </textarea>
+    </div>
+    
+        <!-- LOOPS THROUGH LIST OF PEOPLE AND MAKES SURE it's not reapting and if it's a staffer outputs them with the vlaue savin ght people_id --> 
+
+    <div class="mb-3">
+        <label for="party_planner">Party Planner: </label>
+        <select class="form-select-sm" id="party_planner" name="party_planner">
+        {% for pe in list_people %}
+            {% if pe['role'] == 'Staffer' %}
+            <option value="{{pe['people_id']}}">{{pe['Name']}}</option>
+            {% endif %}
+        {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="rental_items">Rental items: </label>
+        <input type="text" id="rental_items" name="rental_items">
+    </div>
+    <div class="mb-3">
+        <label for="image_path">image path: </label>
+        <input type="text" id="image_path" name="image_path">
+    </div>
+
+    <!-- LOOPS THROUGH LIST OF PEOPLE AND MAKES SURE it's not reapting and if it's a customer -->
+
+    <div class="mb-3">
+        <label for="host">Host: </label>
+        <select class="form-select-sm" id="host" name="host" required>
+            {% for pe in list_people %}
+                {% if pe['role'] == 'Customer' %}
+                <option value="{{pe['people_id']}}">{{pe['Name']}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="notes">Notes: </label>
+        <textarea id="notes" name="notes" rows="3" width="33">
+        </textarea>
+    </div>
+    <br>
+    
+
+    <button class="btn btn-primary"  type="submit" value="Save">Save</button>
+    <button class="btn btn-danger" type="reset" value="reset">Reset</button>
+
+</form>
+
+{% else %}
+
+<h1 class="mt-5">Edit {{event['name']}}</h1>
+
+<form method="post" name="events_edit">
+
+    <div class="mb-3">
+        <label for="Name">  Event Name: </label>
+        <input type="text" id="Name" name="Name" value="{{event['name']}}" required>
+    </div>
+    <!-- THIS ONly saves the name and loops through it creating enough opitions for all venues and leaves the first one displayed  -->
+    <div class="mb-3">
+        <label for="venue">Venue: </label>
+        <select class="form-select-sm" id="venue" name="venue" required>
+            <option value="{{event['venue']}}">{{event['venue']}}</option>
+        {% for alt_ven in List_venues %}
+            <option value="{{ alt_ven['Name'] }}">{{ alt_ven['Name'] }}</option>
+        {% endfor %}
+        </select>
+    </div>
+        <div class="mb-3">
+        <label for="date">Date: </label>
+        <input type="date" id="date" name="date" value="{{event['event_date']}}" required>
+    </div>
+    <div class="mb-3">
+        <label for="start_time">Start Time:</label>
+        <input type="time" id="start_time" name="start_time" value="{{event['start_time']}}" >
+    </div>
+    <div class="mb-3">
+        <label for="end_time">End Time:</label>
+        <input type="time" id="end_time" name="end_time" value="{{event['end_time']}}" >
+    </div>
+    <div class="mb-3">
+        <label for="max_attendes">Max Attendees: </label>
+        <input type="text" id="max_attendes" name="max_attendes" value="{{event['maximum_attendees']}}" >
+    </div>    
+ 
+    <div class="mb-3">
+        <label for="invitation">Invitation: </label>
+        <input type="text" id="invitation" name="invitation", value = "{{event['invitation']}}">
+    </div>
+    <!-- LOOPS THROUGH LIST OF PEOPLE AND MAKES SURE it's not reapting and if it's a staffer outputs them with the vlaue savin ght people_id --> 
+    <div class="mb-3">
+        <label for="party_planner">Party Planner: </label>
+        <select class="form-select-sm" id="party_planner" name="party_planner">
+            <option value="{{ planner_val['people_id'] }}">{{ planner_val['Name'] }}</option>
+            {% for pe in list_people %}
+                {% if pe['role'] == 'Staffer' and pe['people_id'] != planner_val['people_id'] %}
+                    <option value="{{ pe['people_id'] }}">{{ pe['Name'] }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    
+   
+    <div class="mb-3">
+        <label for="rental_items">Rental items: </label>
+        <input type="text" id="rental_items" name="rental_items", value = "{{event['rental_items']}}" required>
+    </div>
+    <div class="mb-3">
+        <label for="image_path">image path: </label>
+        <input type="text" id="image_path" name="image_path", value="{{event['image_path']}}" required>
+    </div>
+<!-- LOOPS THROUGH LIST OF PEOPLE AND MAKES SURE it's not reapting and if it's a customer -->
+    <div class="mb-3">
+        <label for="host">Host: </label>
+        <select class="form-select-sm" id="host" name="host">
+            <option value="{{host_val['people_id']}}">{{host_val['Name']}}</option>
+            {% for he in list_people %}
+                {% if he['role'] == 'Customer' and he['people_id'] != host_val['people_id'] %}
+                <option value="{{he['people_id']}}">{{he['Name']}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+  
+    <div class="mb-3">
+        <label for="notes">Notes: </label>
+        <input type="text" id="notes" name="notes", value="{{event['note']}}">
+    </div>
+    <br>
+    
+
+    <button class="btn btn-primary"  type="submit" value="Save">Save</button>
+    <button class="btn btn-danger" type="reset" value="reset">Reset</button>
+
+
+    
+</form>
+{% endif %}
+
+        
+
+
+
+{% endblock %}

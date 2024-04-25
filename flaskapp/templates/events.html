@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+<h1>PartyTime Events</h1>
+<!-- {{events}} -->
+<div class="row">
+    {% for eve in events %}
+        <div class ="col">
+            <div class="col-sm-6 col-md-2 col-xl-4">
+            <div class="card my-3" style="width: 18rem;">
+                <a href="{{ url_for('event', events_id=eve['event_id']) }}">
+                    <img class="card-img-top" src="{{ url_for('static', filename=eve['image_path'])}}" alt="eve['name']" width="400" height="300"> 
+                </a>
+                <div class="card-body">
+                    <h2>{{ eve['name'] }}</h2>
+                    <p class ="card-text">{{eve['event_date']}} at {{eve['start_time']}}</p>
+                   
+                </div>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+        <center><a href="{{ url_for('add_events') }}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Add an Event</button></center></a>
+    </div>
+
+
+{% endblock %}

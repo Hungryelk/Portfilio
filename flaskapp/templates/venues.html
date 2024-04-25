@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Venues{% endblock %}
+
+{% block content %}
+<!-- Centers the text and the image -->
+<img class="d-block mx-auto mb-4" src="{{ url_for('static', filename= 'images/birthday-party.png')}}" alt="" width="600" height="400"> 
+<div>
+    <h1> <center>Party Event Venues</center></h1>
+</div>
+<table>
+    <style>
+        /* Styling */
+    table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+</style>
+<thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Phone</th>
+      <th>Rental Fee</th>
+      <th>Capacity</th>
+    </tr>
+</thead>
+<tbody>
+    <!-- Loop through for each catg -->
+    {%for venue in venue%}
+    <tr>
+      <td>{{venue["Name"]}}</td>
+      <td>{{venue["address"]}}</td>
+      <td>{{venue["phone"]}}</td>
+      <td>{{venue["Fee"]}}</td>
+      <td>{{venue["attendees"]}}</td>
+    </tr>
+    {%endfor%}
+</tbody>
+  </table>
+  <div>
+    <center><a href="{{ url_for('add_venue') }}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Add a Venue!</button></center></a><center>
+    <HR> 
+
+  </div>
+
+{% endblock %}

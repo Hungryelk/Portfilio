@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold"> Party Time Events</h1>
+    <div class="col-lg-6 mx-auto">
+        <!-- ADD TAGE LINE TO THE QUICKLY -->
+      <p class="lead mb-4">Making your party the best it could be!</p>
+      <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename= 'images/birthday-party.png')}}" alt="" width="400" height="300">
+
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <!-- ADd one more button also change the buttons -->
+        <!-- BUtton Links to the differnt parts of the sets -->
+        <a href="{{ url_for('events') }}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">See Events</button></a>
+        <a href="{{ url_for('venue') }}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">See Venues</button></a>
+        <a href="{{ url_for('people') }}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">See people</button></a>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

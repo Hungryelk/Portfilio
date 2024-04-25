@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Event{% endblock %}
+
+{% block content %}
+<!-- Takes the event Name and and adds it as an H1 tag -->
+<!-- Calls the host name phone and email from the dict using that key -->
+<!-- Calls the planner name phone and email from the dict using that key -->
+<div class="col-lg-6 mx-auto">
+    <h1 class="text-center">{{event['name']}}</h1>
+    <img src="{{ url_for('static', filename=event['image_path'])}}" alt="event['name']" width="600" height="400"> 
+    <h3 class="text-center">HOST: {{host['Name']}}, {{host['phone']}}, {{host['email']}}</h3>
+    <h3 class="text-center">PLANNER: {{planner['Name']}}, {{planner['phone']}}, {{planner['email']}} </h3>
+    <h3 class="text-center">VENUE: {{venue['name']}} </h3>
+</div>
+
+<table class="table table-striped">
+
+    <!-- The table data -->
+    <tr>
+      <th>Location:</th>
+      <td>{{event['venue']}}</td>
+    </tr>
+    <tr>
+        <th>Date</th>
+        <td>{{event['event_date']}}</td>
+    </tr>
+      <th>Start Time</th>
+      <td>{{event['start_time']}}</td>
+    </tr>
+    </tr>
+        <th>End Time</th>
+        <td>{{event['end_time']}}</td>
+    </tr>
+    </tr>
+        <th>Invitation</th>
+        <td>{{event['invitation']}}</td>
+    </tr>
+    </tr>
+        <th>Max Attendence</th>
+        <td>{{event['maximum_attendees']}}</td>
+    </tr>
+    </tr>
+        <th>Event Planner</th>
+        <td>{{planner['Name']}}</td>
+    </tr>
+    </tr>
+        <th>Rental items</th>
+        <td>{{event['rental_items']}}</td>
+    </tr>
+    </tr>
+        <th>Host</th>
+        <td>{{host['Name']}}</td>
+    </tr>
+    </tr>
+        <th>Notes</th>
+        <td>{{event['note']}}</td>
+    </tr>
+  </table>
+
+<br>
+
+<div>
+    <center><a href="{{ url_for('events_edit', event_id=event['event_id']) }}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Edit this Event</button></center></a><center>
+    <HR> 
+  </div>
+  <br>
+<h2 class="text-center"> Attendees</h2>
+{% if attendees is none or not attendees %}
+    <h2>No One Attending</h2>
+{% else %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th> 
+                <th>Phone</th>
+                <th>DOB</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in attendees %}
+                <tr>
+                    <td>{{ person['Name'] }}</td>
+                    <td>{{ person['address'] }}</td>
+                    <td>{{ person['email'] }}</td>
+                    <td>{{ person['phone'] }}</td>
+                    <td>{{ person['date_of_birth'] }}</td>
+
+                    <!--  References back to the delelte attenddee button which takes in input of event_id and people_id-->
+
+                    <td>
+                        <a href="{{ url_for('delete_attendee', event_id=event['event_id'], person_id=person['people_id']) }}">
+                        <button type="button" class="btn btn-danger">Delete</button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<!-- Form connects to the flask using the action tag and then loops through the person table finding the role and adding it the attendee table-->
+<div class="text-center">
+    <h2 class="text-center">Add an Attendee</h2>
+    <form method="post" action="{{ url_for('add_attendee', event_id=event['event_id']) }}">
+        <div class="form-group">
+            <label for="Attendee_add" class="fs-5">Choose an Attendee:</label>
+            <select class="form-select-lg mb-3" id="Attendee_add" name="Attendee_add" aria-label=".form-select-lg example">
+                {% for indv in people %}
+                    {% if indv['role'] == 'Customer' %}
+                        <option value="{{indv['people_id']}}">{{ indv['Name'] }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <a href="{{ url_for('add_attendee', event_id=event['event_id'])}}">
+        <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Add Attendee</button></a>
+    </form>
+</div>
+
+
+
+
+
+
+    
+
+{% endblock %}
